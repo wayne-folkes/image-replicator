@@ -41,7 +41,7 @@ def is_image_present(image,tag):
             return False
         else:
             return True
-    except (ecr.exceptions.ImageNotFoundException, ecr.exceptions.RepositoryAlreadyExistsException) as e:
+    except (ecr.exceptions.ImageNotFoundException, ecr.exceptions.RepositoryNotFoundException) as e:
         return False
 
 @backoff.on_exception(backoff.expo, botoexceptions.ClientError, max_time=10)
