@@ -56,11 +56,12 @@ def get_policy():
     return open('policy.json').read().replace('\n', '').replace('  ','')
 
 def apply_resource_policy(repo_name):
-    policy=get_policy()
-    ecr.set_repository_policy(
-        repositoryName=repo_name,
-        policyText=policy
-    )
+    pass
+    # policy=get_policy()
+    # ecr.set_repository_policy(
+    #     repositoryName=repo_name,
+    #     policyText=policy
+    # )
 
 def replicate_image(source_image,target_image):
     log.info("Replicating image")
