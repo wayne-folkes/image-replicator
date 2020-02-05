@@ -1,1 +1,5 @@
 # image-replicator
+
+
+
+![Build Status](https://codebuild.us-east-1.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiNzJhZWF2NGdtcGpDZWRnOG9VV2p3QjFQTXdEd0ZyT0RXRksxZlRaNHFwSi9aUlJTUkpqWGJERzFzZlFLOTA4NjBtTks4a3JCYkM1b0VadWNtT2pBeWFNPSIsIml2UGFyYW1ldGVyU3BlYyI6ImNsTnFHNXN4ZWlkaUtzVzIiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
