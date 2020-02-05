@@ -27,7 +27,7 @@ def is_repo_present(image):
         return False
 
 def is_image_present(image,tag):
-    log.info("Searching for {} in ECR")
+    log.info("Searching for {}:{} in ECR".format(image,tag))
     try:
         response = ecr.describe_images(
             repositoryName=image,
