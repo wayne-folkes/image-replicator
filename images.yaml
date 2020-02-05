@@ -1,0 +1,6 @@
+-  source: quay.io/giantswarm/cni
+   destination: giantswarm/cni
+   tag: v3.9.1
+-  source: quay.io/giantswarm/hyperkube
+   destination: giantswarm/hyperkube
+   tag: v1.15.5

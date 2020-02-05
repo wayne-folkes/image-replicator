@@ -1,0 +1,15 @@
+version: 0.2
+
+run-as: root
+
+phases:
+  install:
+    run-as: root
+    runtime-versions:
+      docker: 18
+      python: 3.7
+    commands:
+      - pip install -r requirements.txt
+  build:
+    commands:
+      - ./replicate-images.py
