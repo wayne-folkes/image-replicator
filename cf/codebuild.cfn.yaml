@@ -1,0 +1,69 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Parameters:
+  ProjectName:
+    Description: Name of Project
+    Type: String
+  RepoLocation:
+    Description: URL of Github Repo
+    Type: String
+    Default: hhttps://github.com/wayne-folkes/image-replicator.git
+Resources:
+  CodeBuildProject:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Artifacts:
+        Type: NO_ARTIFACTS
+      BadgeEnabled: True
+      Description: Data Munger
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/standard:3.0
+        ImagePullCredentialsType: CODEBUILD
+        PrivilegedMode: true
+        Type: LINUX_CONTAINER
+      LogsConfig:
+        CloudWatchLogs:
+            GroupName: !Ref LogGroup
+            Status: ENABLED
+      Name: !Ref ProjectName
+      ServiceRole: !GetAtt CodeBuildRole.Arn
+      Source:
+        Auth:
+          Type: OAUTH
+        Location: !Ref RepoLocation
+        ReportBuildStatus: True
+        SourceIdentifier: Github
+        Type: GITHUB
+      Triggers:
+        Webhook: true
+        FilterGroups:
+          - - Type: EVENT
+              Pattern: PUSH
+            - Type: HEAD_REF
+              Pattern: ^refs/heads/master*
+  LogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /builds/${ProjectName}
+      RetentionInDays: 7
+  CodeBuildRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Statement:
+          - Action: ['sts:AssumeRole']
+            Effect: Allow
+            Principal:
+              Service: [codebuild.amazonaws.com]
+          Version: '2012-10-17'
+        Path: /
+        Policies:
+          - PolicyName: CodeBuildAccess
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Action:
+                  - 'logs:*'
+                  - 'ecr:*'
+                  Effect: Allow
+                  Resource: '*'
