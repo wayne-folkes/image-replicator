@@ -56,12 +56,16 @@ def get_policy():
     return open('policy.json').read().replace('\n', '').replace('  ','')
 
 def apply_resource_policy(repo_name):
-    pass
-    # policy=get_policy()
-    # ecr.set_repository_policy(
-    #     repositoryName=repo_name,
-    #     policyText=policy
-    # )
+    try:
+        policy=get_policy()
+        log.info("Attempting to apply ECR repo policy")
+        ecr.set_repository_policy(
+            repositoryName=repo_name,
+            policyText=policy
+        )
+    except ecr.exceptions.InvalidParameterException as e:
+        log.error("Unable to apply repo policy: {}".format(e))
+
 
 def replicate_image(source_image,target_image):
     log.info("Replicating image")
