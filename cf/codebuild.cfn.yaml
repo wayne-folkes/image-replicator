@@ -6,7 +6,7 @@ Parameters:
   RepoLocation:
     Description: URL of Github Repo
     Type: String
-    Default: hhttps://github.com/wayne-folkes/image-replicator.git
+    Default: https://github.com/wayne-folkes/image-replicator.git
 Resources:
   CodeBuildProject:
     Type: AWS::CodeBuild::Project
@@ -14,7 +14,7 @@ Resources:
       Artifacts:
         Type: NO_ARTIFACTS
       BadgeEnabled: True
-      Description: Data Munger
+      Description: Public Image Replicator
       Environment:
         ComputeType: BUILD_GENERAL1_SMALL
         Image: aws/codebuild/standard:3.0
