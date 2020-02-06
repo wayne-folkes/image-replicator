@@ -93,7 +93,7 @@ def main():
     log.info("{} Images found in file".format(num_images))
     for index, image in enumerate(images,start=1):
         source = image.get('source')
-        destination = image.get('source')
+        destination = image.get('destination',image.get('source'))
         tag = image.get('tag')
         source_image = "{}:{}".format(source,tag)
         log.info("Source Image {} of {} - {}".format(index, num_images, source_image))
