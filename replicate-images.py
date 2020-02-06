@@ -48,7 +48,7 @@ def is_image_present(image,tag):
 def create_repo(repo_name):
     ecr.create_repository(
         repositoryName=repo_name,
-        tags==[
+        tags=[
             {'Key': 'Source', 'Value': repo_name}
         ],
         imageScanningConfiguration={
