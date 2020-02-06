@@ -48,6 +48,9 @@ def is_image_present(image,tag):
 def create_repo(repo_name):
     ecr.create_repository(
         repositoryName=repo_name,
+        tags==[
+            {'Key': 'Source', 'Value': repo_name}
+        ]
         imageScanningConfiguration={
         'scanOnPush': True
     })
@@ -90,7 +93,7 @@ def main():
     log.info("{} Images found in file".format(num_images))
     for index, image in enumerate(images,start=1):
         source = image.get('source')
-        destination = image.get('destination')
+        destination = image.get('source')
         tag = image.get('tag')
         source_image = "{}:{}".format(source,tag)
         log.info("Source Image {} of {} - {}".format(index, num_images, source_image))
