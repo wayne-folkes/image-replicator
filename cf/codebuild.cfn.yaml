@@ -45,7 +45,7 @@ Resources:
     Type: AWS::Logs::LogGroup
     Properties:
       LogGroupName: !Sub /builds/${ProjectName}
-      RetentionInDays: 7
+      RetentionInDays: 5
   CodeBuildRole:
       Type: AWS::IAM::Role
       Properties:
