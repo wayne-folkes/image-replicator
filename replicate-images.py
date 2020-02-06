@@ -50,7 +50,7 @@ def create_repo(repo_name):
         repositoryName=repo_name,
         tags==[
             {'Key': 'Source', 'Value': repo_name}
-        ]
+        ],
         imageScanningConfiguration={
         'scanOnPush': True
     })
