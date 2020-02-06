@@ -18,6 +18,7 @@ ECR_BASE = "{}.dkr.ecr.{}.amazonaws.com".format(ACCOUNTID,REGION)
 log = logging.getLogger()
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
+@backoff.on_exception(backoff.expo, botoexceptions.ClientError, max_time=10)
 def is_repo_present(image):
     log.info('Checking for image')
     try:
@@ -26,6 +27,7 @@ def is_repo_present(image):
     except ecr.exceptions.RepositoryNotFoundException as e:
         return False
 
+@backoff.on_exception(backoff.expo, botoexceptions.ClientError, max_time=10)
 def is_image_present(image,tag):
     log.info("Searching for {}:{} in ECR".format(image,tag))
     try:
@@ -40,6 +42,7 @@ def is_image_present(image,tag):
         if (len(response.get('imageDetails')) == 0):
             return False
         else:
+            log.info("{}:{} found in ECR".format(image,tag))
             return True
     except (ecr.exceptions.ImageNotFoundException, ecr.exceptions.RepositoryNotFoundException) as e:
         return False
