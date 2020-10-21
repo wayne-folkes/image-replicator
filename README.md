@@ -1,10 +1,5 @@
 # image-replicator
 
-
-
-![Build Status](https://codebuild.us-east-1.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiNzJhZWF2NGdtcGpDZWRnOG9VV2p3QjFQTXdEd0ZyT0RXRksxZlRaNHFwSi9aUlJTUkpqWGJERzFzZlFLOTA4NjBtTks4a3JCYkM1b0VadWNtT2pBeWFNPSIsIml2UGFyYW1ldGVyU3BlYyI6ImNsTnFHNXN4ZWlkaUtzVzIiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
-
-
 This project allows you to keep a copy of publically available Docker images in AWS ECR. The use case for this to keep your services running in the event of an outage on Dockerhub or other public registry. This works by running a Codebuild job that will pull the images defined in the images.yaml config file and push to ECR if isnt already present.
 
 ## Components
