@@ -43,6 +43,8 @@ Resources:
               Pattern: ^refs/heads/master*
   LogGroup:
     Type: AWS::Logs::LogGroup
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
     Properties:
       LogGroupName: !Sub /builds/${ProjectName}
       RetentionInDays: 5
