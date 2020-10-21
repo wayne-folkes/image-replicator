@@ -9,9 +9,9 @@ import logging
 import backoff
 from botocore import exceptions as botoexceptions
 
-ecr = boto3.client('ecr')
+ecr = boto3.client("ecr")
 
-ACCOUNTID = boto3.client('sts').get_caller_identity().get('Account')
+ACCOUNTID = boto3.client("sts").get_caller_identity().get("Account")
 REGION = boto3.DEFAULT_SESSION.region_name
 ECR_BASE = "{}.dkr.ecr.{}.amazonaws.com".format(ACCOUNTID,REGION)
 
@@ -20,7 +20,7 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 @backoff.on_exception(backoff.expo, botoexceptions.ClientError, max_time=10)
 def is_repo_present(image):
-    log.info('Checking for image')
+    log.info("Checking for image")
     try:
         ecr.describe_repositories(repositoryNames=[image])
         return True
@@ -34,12 +34,12 @@ def is_image_present(image,tag):
         response = ecr.describe_images(
             repositoryName=image,
             imageIds=[{
-                    'imageTag': tag
+                    "imageTag": tag
                 }],
             filter={
-                'tagStatus': 'TAGGED'
+                "tagStatus": "TAGGED"
             })
-        if (len(response.get('imageDetails')) == 0):
+        if (len(response.get("imageDetails")) == 0):
             return False
         else:
             log.info("{}:{} found in ECR".format(image,tag))
@@ -52,14 +52,14 @@ def create_repo(repo_name):
     ecr.create_repository(
         repositoryName=repo_name,
         tags=[
-            {'Key': 'Source', 'Value': repo_name}
+            {"Key": "Source", "Value": repo_name}
         ],
         imageScanningConfiguration={
-        'scanOnPush': True
+        "scanOnPush": True
     })
 
 def get_policy():
-    return open('policy.json').read().replace('\n', '').replace('  ','')
+    return open("policy.json").read().replace("\n", "").replace("  ","")
 
 def apply_resource_policy(repo_name):
     try:
@@ -77,7 +77,7 @@ def replicate_image(source_image,target_image):
     log.info("Replicating image")
     log.info("Source {}".format(source_image))
     log.info("Target {}".format(target_image))
-    script_path = './pull-push.sh'
+    script_path = "./pull-push.sh"
     result = subprocess.run([script_path, source_image, target_image],
                    capture_output=True, text=True
                    )
@@ -88,16 +88,16 @@ def replicate_image(source_image,target_image):
         log.error(result.stderr)
 
 def get_image_list():
-    return yaml.safe_load(open('images.yaml'))
+    return yaml.safe_load(open("images.yaml"))
 
 def main():
     images = get_image_list()
     num_images=len(images)
     log.info("{} Images found in file".format(num_images))
     for index, image in enumerate(images,start=1):
-        source = image.get('source')
-        destination = image.get('destination',image.get('source'))
-        tag = image.get('tag')
+        source = image.get("source")
+        destination = image.get("destination",image.get("source"))
+        tag = image.get("tag")
         source_image = "{}:{}".format(source,tag)
         log.info("Source Image {} of {} - {}".format(index, num_images, source_image))
 
