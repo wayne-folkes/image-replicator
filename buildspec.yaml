@@ -5,11 +5,16 @@ run-as: root
 phases:
   install:
     run-as: root
-    runtime-versions:
-      docker: 18
-      python: 3.8
     commands:
-      - pip install -r requirements.txt
+      - pip install -r requirements.txt --quiet
+      - echo 'deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Debian_10/ /' > /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
+      - curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/Debian_10/Release.key | apt-key add -
+      - apt-get update && apt-get install -y skopeo
+  pre_build:
+    commands:
+      - codebuild-breakpoint
+      - make validate-yaml
   build:
     commands:
+      # - deploy-ecr-role
       - ./replicate-images.py
