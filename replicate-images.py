@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
+import logging
 import subprocess
 import sys
-import logging
+
+import backoff
 import boto3
 import yaml
-import backoff
 from botocore import exceptions as botoexceptions
 
 ecr = boto3.client("ecr")
@@ -91,8 +92,7 @@ def replicate_image(source_image, target_image) -> int:
     log.info(f"Target {target_image}")
     script_path = "./pull-push.sh"
     result = subprocess.run(
-        [script_path, source_image, target_image],
-        capture_output=True, text=True
+        [script_path, source_image, target_image], capture_output=True, text=True
     )
     log.info("Running {result.args}")
     if result.returncode == 0:
