@@ -80,10 +80,10 @@ def get_policy():
 def apply_resource_policy(repo_name):
     try:
         policy = get_policy()
-        log.info("Attempting to apply ECR repo policy")
+        log.info("Attempting to apply ECR repository policy")
         ecr.set_repository_policy(repositoryName=repo_name, policyText=policy)
     except ecr.exceptions.InvalidParameterException as e:
-        log.error(f"Unable to apply repo policy: {e}")
+        log.error(f"Unable to apply repository policy: {e}")
 
 
 def replicate_image(source_image, target_image) -> int:
@@ -125,19 +125,19 @@ def main():
             log.info("tag with digest")
 
         log.info(f"Source Image {index} of {num_images} - {source_image}")
-        log.info(f"Checking for repo {destination} in ECR")
+        log.info(f"Checking for repository {destination} in ECR")
 
         if not is_repo_present(destination):
-            log.info(f"Repo {destination} not found, creating...")
+            log.info(f"Repository {destination} not found, creating...")
             create_repo(destination)
-            log.info(f"Repo {destination} created!")
+            log.info(f"Repository {destination} created!")
             apply_resource_policy(destination)
 
         target_image = f"{ECR_BASE}/{destination}:{tag}"
 
         log.info("Target Image %s", target_image)
 
-        log.info(f"Checking for image {tag} in repo {destination} in ECR")
+        log.info(f"Checking for image {tag} in repository {destination} in ECR")
         if not is_image_present(destination, tag, digest):
             log.info(f"{target_image} not found in ECR initiating replication")
             if replicate_image(source_image, target_image) != 0:
