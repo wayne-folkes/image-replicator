@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 
-import boto3
-import yaml
-import os
 import subprocess
 import sys
 import logging
+import boto3
+import yaml
 import backoff
 from botocore import exceptions as botoexceptions
 
@@ -25,11 +24,12 @@ def is_repo_present(image):
     try:
         ecr.describe_repositories(repositoryNames=[image])
         return True
-    except ecr.exceptions.RepositoryNotFoundException as e:
+    except ecr.exceptions.RepositoryNotFoundException:
         return False
     except ecr.exceptions.InvalidParameterException as e:
         log.error(
-            f"Unable to check for the presence of {image} InvalidParameterException encoutered {e}"
+            f"Unable to check for the presence of {image} \
+                InvalidParameterException encoutered {e}"
         )
         raise
 
@@ -59,7 +59,7 @@ def is_image_present(image, tag, digest=None):
         except (
             ecr.exceptions.ImageNotFoundException,
             ecr.exceptions.RepositoryNotFoundException,
-        ) as e:
+        ):
             return False
 
 
@@ -91,7 +91,8 @@ def replicate_image(source_image, target_image) -> int:
     log.info(f"Target {target_image}")
     script_path = "./pull-push.sh"
     result = subprocess.run(
-        [script_path, source_image, target_image], capture_output=True, text=True
+        [script_path, source_image, target_image],
+        capture_output=True, text=True
     )
     log.info("Running {result.args}")
     if result.returncode == 0:
@@ -143,7 +144,8 @@ def main():
                 failed_replicated_images.append(source_image)
     if len(failed_replicated_images) > 0:
         log.info(
-            f"Replication Completed with failures {len(failed_replicated_images)} failed to be replicated"
+            f"Replication Completed with failures \
+                {len(failed_replicated_images)} failed to be replicated"
         )
         for failed_replicated_image in failed_replicated_images:
             log.error(failed_replicated_image)
