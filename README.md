@@ -7,11 +7,11 @@ This project allows you to keep a copy of publically available Docker images in 
 1. [../cf/codebuild.cfn.yaml](../cf/codebuild.cfn.yaml) - Cloudformation template to create the Codebuild Job
 2. [replicate-images.py](../cf/codebuild.cfn.yaml) - This python script will:
    1. parses the YAML config
-   2. Checks to see if the ECR repository exists, if not create it. The default value for the repo will the URL of the source repo
-   3. Check to see if an image with the same tag is in the repo if not then execute [__push-pull.sh__](../push-pull.sh)
+   2. Checks to see if the ECR repository exists, if not create it. The default value for the repository will the URL of the source repository
+   3. Check to see if an image with the same tag is in the repository if not then execute [__push-pull.sh__](../push-pull.sh)
 3. [push-pull.sh](../push-pull.sh) - This script takes 2 arguments __source_repo__ and __target_repo__ it will.
    1. Pull the image
-   2. Tag the image for your ECR repo
+   2. Tag the image for your ECR repository
    3. Login to ECR
    4. Push the image
 4. [buildspec.yaml](../buildspec.yaml) - This defines the dependencies and steps to be run in the Codebuild
